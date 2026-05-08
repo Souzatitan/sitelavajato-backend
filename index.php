@@ -35,3 +35,13 @@ $router->add('POST', '/clientes/login', [AuthController::class, 'loginCliente'])
 
 // USUÁRIO LOGADO
 $router->add('GET', '/me', [AuthController::class, 'me']);
+
+try {
+    $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+} catch (\Throwable $e) {
+    Response::json([
+        'erro' => $e->getMessage(),
+        'linha' => $e->getLine(),
+        'arquivo' => $e->getFile()
+    ], 500);
+}
