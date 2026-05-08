@@ -26,12 +26,12 @@ $router = new Router();
 |--------------------------------------------------------------------------
 */
 
+// ADMIN
 $router->add('POST', '/admin/login', [AdminController::class, 'login']);
 
-/*
-|--------------------------------------------------------------------------
-| EXECUTA
-|--------------------------------------------------------------------------
-*/
+// CLIENTES
+$router->add('POST', '/clientes/register', [AuthController::class, 'registerCliente']);
+$router->add('POST', '/clientes/login', [AuthController::class, 'loginCliente']);
 
-$router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+// USUÁRIO LOGADO
+$router->add('GET', '/me', [AuthController::class, 'me']);
