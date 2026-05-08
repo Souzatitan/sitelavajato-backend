@@ -20,9 +20,7 @@ class Database
             return self::$connection;
         }
 
-        // DEBUG TEMPORÁRIO
-        var_dump($_ENV);
-        exit;
+        
 
         // Dados de conexão vindos do .env
         $host = $_ENV['DB_HOST'] ?? '127.0.0.1';
