@@ -1,14 +1,5 @@
 <?php
 
-/*
-
-Arquivo responsável pela conexão com o banco de dados.
-
-A conexão é feita usando PDO, uma biblioteca nativa do PHP.
-As configurações de conexão vêm do arquivo .env.
-
-*/
-
 declare(strict_types=1);
 
 namespace App\Config;
@@ -29,6 +20,10 @@ class Database
             return self::$connection;
         }
 
+        // DEBUG TEMPORÁRIO
+        var_dump($_ENV);
+        exit;
+
         // Dados de conexão vindos do .env
         $host = $_ENV['DB_HOST'] ?? '127.0.0.1';
         $port = $_ENV['DB_PORT'] ?? '5432';
@@ -37,23 +32,25 @@ class Database
         $pass = $_ENV['DB_PASS'] ?? '';
 
         // Monta o endereço de conexão do PostgreSQL
-        $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s', $host, $port, $dbName);
+        $dsn = sprintf(
+            'pgsql:host=%s;port=%s;dbname=%s;sslmode=require',
+            $host,
+            $port,
+            $dbName
+        );
 
         try {
             // Cria a conexão PDO com o banco
             self::$connection = new PDO($dsn, $user, $pass, [
-                // Faz o PDO lançar erro quando algo der errado
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-
-                // Faz as consultas retornarem arrays associativos
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
         } catch (PDOException $e) {
-            // Se falhar a conexão, retorna um erro mais claro
-            throw new \RuntimeException('Erro ao conectar no banco: ' . $e->getMessage());
+            throw new \RuntimeException(
+                'Erro ao conectar no banco: ' . $e->getMessage()
+            );
         }
 
-        // Retorna a conexão criada
         return self::$connection;
     }
 }
