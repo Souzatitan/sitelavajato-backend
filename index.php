@@ -17,7 +17,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use App\Core\Router;
 use App\Core\Response;
-
+use App\Controllers\HorarioController;
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
 
@@ -38,6 +38,9 @@ $router->add('POST', '/clientes/login', [AuthController::class, 'loginCliente'])
 
 // USUÁRIO LOGADO
 $router->add('GET', '/me', [AuthController::class, 'me']);
+
+// HORÁRIOS
+$router->add('GET', '/horarios', [HorarioController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------
