@@ -16,7 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once __DIR__ . '/vendor/autoload.php';
 
 use App\Core\Router;
+use App\Core\Response;
+
 use App\Controllers\AdminController;
+use App\Controllers\AuthController;
 
 $router = new Router();
 
@@ -36,12 +39,25 @@ $router->add('POST', '/clientes/login', [AuthController::class, 'loginCliente'])
 // USUÁRIO LOGADO
 $router->add('GET', '/me', [AuthController::class, 'me']);
 
+/*
+|--------------------------------------------------------------------------
+| EXECUTA
+|--------------------------------------------------------------------------
+*/
+
 try {
-    $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+
+    $router->dispatch(
+        $_SERVER['REQUEST_URI'],
+        $_SERVER['REQUEST_METHOD']
+    );
+
 } catch (\Throwable $e) {
+
     Response::json([
         'erro' => $e->getMessage(),
         'linha' => $e->getLine(),
         'arquivo' => $e->getFile()
     ], 500);
+
 }
