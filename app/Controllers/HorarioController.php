@@ -64,36 +64,30 @@ class HorarioController extends Controller
     }
 
     // Cria um novo horário
-    // Cria novos horários
+    // Cria um novo horário
 public function store(): void
 {
     // Apenas admin pode criar horários
     AuthMiddleware::requireAuth('admin');
 
-    // Lê os dados enviados
+    // Lê os dados enviados no JSON
     $data = $this->input();
 
-    // Exige data e horarios
-    $this->requireFields($data, ['data', 'horarios']);
+    // Exige data e hora
+    $this->requireFields($data, ['data', 'hora']);
 
-    // Verifica se horarios é array
-    if (!is_array($data['horarios'])) {
-        Response::json(['erro' => 'Horários inválidos'], 400);
-    }
-
+    // Salva o horário no banco
     $model = new Horario();
 
-    // Salva todos os horários
-    foreach ($data['horarios'] as $hora) {
-        $model->create([
-            'data' => $data['data'],
-            'hora' => $hora
-        ]);
-    }
+    $id = $model->create([
+        'data' => $data['data'],
+        'hora' => $data['hora'],
+    ]);
 
     // Retorna sucesso
     Response::json([
-        'mensagem' => 'Horários criados com sucesso'
+        'mensagem' => 'Horário criado com sucesso',
+        'id' => $id
     ], 201);
 }
 
