@@ -52,6 +52,7 @@ $router->add('GET', '/me', [AuthController::class, 'me']);
 
 $router->add('GET', '/horarios', [HorarioController::class, 'index']);
 $router->add('POST', '/horarios', [HorarioController::class, 'store']);
+$router->add('DELETE', '/horarios/{id}', [HorarioController::class, 'delete']);
 
 /*
 |--------------------------------------------------------------------------
