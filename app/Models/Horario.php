@@ -117,19 +117,18 @@ class Horario
     }
 
     // Exclui um horário pelo ID
-   // Exclui um horário pelo ID
 public function delete(int $id): bool
 {
-    // primeiro remove agendamentos ligados ao horário
-    $stmtAg = $this->conn->prepare(
+    // 🔥 primeiro remove agendamentos ligados ao horário
+    $stmtAgendamento = $this->conn->prepare(
         'DELETE FROM agendamentos WHERE horario_id = :id'
     );
 
-    $stmtAg->execute([
+    $stmtAgendamento->execute([
         ':id' => $id
     ]);
 
-    // depois remove o horário
+    // 🔥 depois remove o horário
     $stmt = $this->conn->prepare(
         'DELETE FROM horarios WHERE id = :id'
     );
