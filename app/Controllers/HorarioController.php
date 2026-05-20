@@ -117,8 +117,30 @@ public function store(): void
     }
 
     // Exclui um horário
-    public function delete(int $id): void
-    {
+public function delete($id): void
+{
+    $id = (int) $id;
+
+    // Apenas admin pode excluir horários
+    AuthMiddleware::requireAuth('admin');
+
+    // Verifica se o horário existe
+    $model = new Horario();
+
+    if (!$model->findById($id)) {
+        Response::json([
+            'erro' => 'Horário não encontrado'
+        ], 404);
+    }
+
+    // Exclui o horário
+    $model->delete($id);
+
+    // Retorna sucesso
+    Response::json([
+        'mensagem' => 'Horário removido com sucesso'
+    ]);
+
         // Apenas admin pode excluir horários
         AuthMiddleware::requireAuth('admin');
 

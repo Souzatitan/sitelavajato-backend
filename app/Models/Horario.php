@@ -116,29 +116,25 @@ class Horario
         ]);
     }
 
-// Exclui um horário
-public function delete($id): void
+// Exclui um horário pelo ID
+public function delete(int $id): bool
 {
-    $id = (int) $id;
+    // remove agendamentos ligados ao horário
+    $stmtAgendamento = $this->conn->prepare(
+        'DELETE FROM agendamentos WHERE horario_id = :id'
+    );
 
-    // Apenas admin pode excluir horários
-    AuthMiddleware::requireAuth('admin');
+    $stmtAgendamento->execute([
+        ':id' => $id
+    ]);
 
-    // Verifica se o horário existe
-    $model = new Horario();
+    // remove o horário
+    $stmt = $this->conn->prepare(
+        'DELETE FROM horarios WHERE id = :id'
+    );
 
-    if (!$model->findById($id)) {
-        Response::json([
-            'erro' => 'Horário não encontrado'
-        ], 404);
-    }
-
-    // Exclui o horário
-    $model->delete($id);
-
-    // Retorna sucesso
-    Response::json([
-        'mensagem' => 'Horário removido com sucesso'
+    return $stmt->execute([
+        ':id' => $id
     ]);
 }
 }
