@@ -81,25 +81,42 @@ class Horario
     }
 
     // Cria um novo horário
-    public function create(array $data): int
-    {
-        // Prepara o INSERT
-        $stmt = $this->conn->prepare(
-            'INSERT INTO horarios (data, hora)
-             VALUES (:data, :hora)
-             RETURNING id'
-        );
+    // Cria um novo horário
+public function create(array $data): int
+{
+    // 🔎 verifica se já existe
+    $check = $this->conn->prepare(
+        'SELECT id FROM horarios
+         WHERE data = :data
+         AND hora = :hora'
+    );
 
-        // Executa passando data e hora
-        $stmt->execute([
-            ':data' => $data['data'],
-            ':hora' => $data['hora'],
-        ]);
+    $check->execute([
+        ':data' => $data['data'],
+        ':hora' => $data['hora'],
+    ]);
 
-        // Retorna o ID criado
-        return (int) $stmt->fetchColumn();
+    $existente = $check->fetch();
+
+    // se já existir, retorna o id existente
+    if ($existente) {
+        return (int) $existente['id'];
     }
 
+    // cria novo horário
+    $stmt = $this->conn->prepare(
+        'INSERT INTO horarios (data, hora)
+         VALUES (:data, :hora)
+         RETURNING id'
+    );
+
+    $stmt->execute([
+        ':data' => $data['data'],
+        ':hora' => $data['hora'],
+    ]);
+
+    return (int) $stmt->fetchColumn();
+}
     // Atualiza um horário
     public function update(int $id, array $data): bool
     {
