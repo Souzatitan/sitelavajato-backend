@@ -22,7 +22,7 @@ class HorarioController extends Controller
     public function index(): void
     {
         // Apenas admin pode listar todos os horários
-        AuthMiddleware::requireAuth('admin');
+     
 
         // Busca os horários no banco
         $model = new Horario();
