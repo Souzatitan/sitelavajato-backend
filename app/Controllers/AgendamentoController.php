@@ -128,7 +128,7 @@ class AgendamentoController extends Controller
         // atualiza status
         $model->updateStatus(
             $id,
-            'confirmado'
+            'concluido'
         );
 
         Response::json([
