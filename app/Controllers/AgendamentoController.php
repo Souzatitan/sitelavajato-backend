@@ -110,8 +110,10 @@ class AgendamentoController extends Controller
 }
 
     // ✅ CONFIRMAR AGENDAMENTO
-    public function confirm(int $id): void
+    public function confirm(string $id): void
 {
+    $id = (int) $id;
+
     AuthMiddleware::requireAuth('admin');
 
     Response::json([
