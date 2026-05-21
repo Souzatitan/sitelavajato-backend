@@ -111,30 +111,14 @@ class AgendamentoController extends Controller
 
     // ✅ CONFIRMAR AGENDAMENTO
     public function confirm(int $id): void
-    {
-        // apenas admin
-        AuthMiddleware::requireAuth('admin');
+{
+    AuthMiddleware::requireAuth('admin');
 
-        $model = new Agendamento();
-
-        // verifica existência
-        if (!$model->findById($id)) {
-
-            Response::json([
-                'erro' => 'Agendamento não encontrado'
-            ], 404);
-        }
-
-        // atualiza status
-        $model->updateStatus(
-            $id,
-            'concluido'
-        );
-
-        Response::json([
-            'mensagem' => 'Agendamento confirmado'
-        ]);
-    }
+    Response::json([
+        'teste' => 'confirm funcionando',
+        'id' => $id
+    ]);
+}
 
     // ❌ CANCELAR
     public function cancel(int $id): void
