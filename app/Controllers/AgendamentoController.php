@@ -123,8 +123,9 @@ class AgendamentoController extends Controller
 }
 
     // ❌ CANCELAR
-    public function cancel(int $id): void
+    public function cancel(string $id): void
     {
+        $id = (int) $id;
         $user = AuthMiddleware::requireAuth();
 
         $model = new Agendamento();
@@ -164,8 +165,9 @@ class AgendamentoController extends Controller
     }
 
     // 🗑 EXCLUIR
-    public function delete(int $id): void
+    public function delete(string $id): void
     {
+        $id = (int) $id;
         AuthMiddleware::requireAuth('admin');
 
         $model = new Agendamento();
