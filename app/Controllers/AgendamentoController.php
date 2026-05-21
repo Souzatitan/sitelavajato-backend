@@ -116,9 +116,22 @@ class AgendamentoController extends Controller
 
     AuthMiddleware::requireAuth('admin');
 
+    $model = new Agendamento();
+
+    if (!$model->findById($id)) {
+
+        Response::json([
+            'erro' => 'Agendamento não encontrado'
+        ], 404);
+    }
+
+    $model->updateStatus(
+        $id,
+        'confirmado'
+    );
+
     Response::json([
-        'teste' => 'confirm funcionando',
-        'id' => $id
+        'mensagem' => 'Agendamento confirmado'
     ]);
 }
 
